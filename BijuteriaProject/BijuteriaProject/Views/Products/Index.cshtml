@@ -1,0 +1,80 @@
+﻿@model IEnumerable<BijuteriaProject.Data.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<center><h1>Бижута</h1></center>
+
+<center>
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Добави ново бижу</a>
+    </p>
+</center>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Име на бижуто:
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categories)
+            </th>
+            <th>
+                Описание:
+            </th>
+            <th>
+                Снимка:
+            </th>
+            <th>
+                Цена:
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    Дата на промяна:
+                </th>
+            }
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categories.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhotoURL)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegDate)
+                    </td>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактирай</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Детайли</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Изтрий</a>
+                }
+                <td>                  
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Детайли за бижуто</a>                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
