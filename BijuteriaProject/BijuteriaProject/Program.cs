@@ -1,4 +1,5 @@
 
+using ASPShopBag.Services;
 using BijuteriaProject.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ else
     app.UseHsts();
 }
 
+app.PrepareDataBase().Wait();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

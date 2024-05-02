@@ -4,42 +4,42 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Изтрий</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Наистина ли искате да изтриете тази поръчка?</h3>
 <div>
-    <h4>Order</h4>
+    
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Products)
+        <dt class="col-sm-2">
+            Поръчан продукт/бижу:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Products.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Products.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Clients)
+        <dt class="col-sm-2">
+            Поръчан от:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Clients.Id)
+        <dd class="col-sm-10">
+            @Model.Clients.FirstName @Model.Clients.LastName
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
+        <dt class="col-sm-2">
+            Количество:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Quantity)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegDate)
+        <dt class="col-sm-2">
+            Дата на поръчката:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RegDate)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Изтрий" class="btn btn-danger" /> |
+        <a asp-action="Index">Обратно към поръчките</a>
     </form>
 </div>

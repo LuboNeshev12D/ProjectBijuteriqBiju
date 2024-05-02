@@ -1,0 +1,57 @@
+﻿@model IEnumerable<BijuteriaProject.Data.Prilojenie>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    thead {
+        background-color: lightsteelblue
+    }   
+</style>
+<center><h1>Приложение на бижутата</h1></center>
+
+@if (User.IsInRole("Admin"))
+{
+    <center>
+        <p>
+            <a class="btn btn-primary" asp-action="Create">Добави ново приложение</a>
+        </p>
+    </center>
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Наименование на приложението
+            </th>
+            <th>
+                Описание
+            </th>
+            <th>
+                Дата на промяна
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegDate)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Промени</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Детайли</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

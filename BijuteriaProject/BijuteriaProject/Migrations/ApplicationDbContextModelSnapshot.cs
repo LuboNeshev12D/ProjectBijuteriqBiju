@@ -156,6 +156,30 @@ namespace BijuteriaProject.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("BijuteriaProject.Data.Prilojenie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Prilojeniq");
+                });
+
             modelBuilder.Entity("BijuteriaProject.Data.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -182,12 +206,17 @@ namespace BijuteriaProject.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<int>("PrilojenieId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryID");
+
+                    b.HasIndex("PrilojenieId");
 
                     b.ToTable("Products");
                 });
@@ -356,7 +385,15 @@ namespace BijuteriaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BijuteriaProject.Data.Prilojenie", "Prilojeniq")
+                        .WithMany("Products")
+                        .HasForeignKey("PrilojenieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Categories");
+
+                    b.Navigation("Prilojeniq");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -418,6 +455,11 @@ namespace BijuteriaProject.Migrations
             modelBuilder.Entity("BijuteriaProject.Data.Client", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("BijuteriaProject.Data.Prilojenie", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("BijuteriaProject.Data.Product", b =>

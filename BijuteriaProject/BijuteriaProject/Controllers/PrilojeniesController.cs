@@ -6,26 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BijuteriaProject.Data;
+using Microsoft.VisualBasic;
 
 namespace BijuteriaProject.Controllers
 {
-    public class ProductsController : Controller
+    public class PrilojeniesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public PrilojeniesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Products
+        // GET: Prilojenies
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Categories).Include(p => p.Prilojeniq);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Prilojeniq.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Prilojenies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,46 +33,40 @@ namespace BijuteriaProject.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Categories)
-                .Include(p => p.Prilojeniq)
+            var prilojenie = await _context.Prilojeniq
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (prilojenie == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(prilojenie);
         }
 
-        // GET: Products/Create
+        // GET: Prilojenies/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["PrilojenieId"] = new SelectList(_context.Prilojeniq, "Id", "Name");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Prilojenies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryID,PrilojenieId,Description,PhotoURL,Price,RegDate")] Product product)
+        public async Task<IActionResult> Create([Bind("Name,Description,RegDate")] Prilojenie prilojenie)
         {
-            product.RegDate = DateTime.Now;
+            prilojenie.RegDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                _context.Products.Add(product);
+                _context.Prilojeniq.Add(prilojenie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryID);
-            ViewData["PrilojenieId"] = new SelectList(_context.Prilojeniq, "Id", "Name", product.PrilojenieId);
-            return View(product);
+            return View(prilojenie);
         }
 
-        // GET: Products/Edit/5
+        // GET: Prilojenies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +74,22 @@ namespace BijuteriaProject.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var prilojenie = await _context.Prilojeniq.FindAsync(id);
+            if (prilojenie == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryID);
-            ViewData["PrilojenieId"] = new SelectList(_context.Prilojeniq, "Id", "Name", product.PrilojenieId);
-            return View(product);
+            return View(prilojenie);
         }
 
-        // POST: Products/Edit/5
+        // POST: Prilojenies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CategoryID,PrilojenieId,Description,PhotoURL,Price,RegDate")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,RegDate")] Prilojenie prilojenie)
         {
-            if (id != product.Id)
+            if (id != prilojenie.Id)
             {
                 return NotFound();
             }
@@ -106,13 +98,13 @@ namespace BijuteriaProject.Controllers
             {
                 try
                 {
-                    product.RegDate = DateTime.Now;
-                    _context.Products.Update(product);
+                    prilojenie.RegDate = DateTime.Now;
+                    _context.Prilojeniq.Update(prilojenie);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!PrilojenieExists(prilojenie.Id))
                     {
                         return NotFound();
                     }
@@ -123,12 +115,10 @@ namespace BijuteriaProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryID);
-            ViewData["PrilojenieId"] = new SelectList(_context.Prilojeniq, "Id", "Name", product.PrilojenieId);
-            return View(product);
+            return View(prilojenie);
         }
 
-        // GET: Products/Delete/5
+        // GET: Prilojenies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,36 +126,34 @@ namespace BijuteriaProject.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.Categories)
-                .Include(p => p.Prilojeniq)
+            var prilojenie = await _context.Prilojeniq
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            if (prilojenie == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(prilojenie);
         }
 
-        // POST: Products/Delete/5
+        // POST: Prilojenies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var prilojenie = await _context.Prilojeniq.FindAsync(id);
+            if (prilojenie != null)
             {
-                _context.Products.Remove(product);
+                _context.Prilojeniq.Remove(prilojenie);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        private bool PrilojenieExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Prilojeniq.Any(e => e.Id == id);
         }
     }
 }

@@ -4,51 +4,66 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Детайли за продукта</h1>
 
 <div>
-    <h4>Product</h4>
+    
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Наименование:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categories)
+            Категория:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categories.Id)
+            @Html.DisplayFor(model => model.Categories.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Приложение:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Prilojeniq.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Снимка:
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Html.DisplayFor(model => model.PhotoURL)" width="200"/>
+        </dd>
+        <dt class = "col-sm-2">
+            Описание:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
+
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotoURL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhotoURL)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            Цена:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RegDate)
-        </dd>
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2" style="text-justify:auto">
+                Дата на промяна:
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RegDate)
+            </dd>
+        }
+
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (User.IsInRole("Admin"))
+{
+    <div>
+        <a class="btn btn-primary"asp-action="Edit" asp-route-id="@Model?.Id">Промени</a> |
+        <a asp-action="Index">Обратно към бижутата</a>
+    </div>
+}
+

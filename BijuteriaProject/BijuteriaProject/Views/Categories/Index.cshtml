@@ -3,23 +3,32 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    thead{
+        background-color:lightsteelblue
+    }
+</style>
+<center><h1>Категории бижута</h1></center>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+@if (User.IsInRole("Admin"))
+{
+    <center>
+        <p>
+            <a class="btn btn-primary" asp-action="Create">Добави нова категория</a>
+        </p>
+    </center>
+}
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Наименование на категорията
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Описание
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegDate)
+                Дата на промяна
             </th>
             <th></th>
         </tr>
@@ -37,9 +46,9 @@
                 @Html.DisplayFor(modelItem => item.RegDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-primary"asp-action="Edit" asp-route-id="@item.Id">Промени</a> 
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Детайли</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
             </td>
         </tr>
 }

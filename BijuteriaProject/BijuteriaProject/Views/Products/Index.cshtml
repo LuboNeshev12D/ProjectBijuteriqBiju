@@ -5,28 +5,35 @@
 }
 
 <center><h1>Бижута</h1></center>
+@if (User.IsInRole("Admin"))
+{
+    <center>
+        <p>
+            <a class="btn btn-primary" asp-action="Create">Добави ново бижу</a>
+        </p>
+    </center>
+}
+<style>
+    thead {
+        background-color: lightsteelblue
+    }
+</style>
 
-<center>
-    <p>
-        <a class="btn btn-primary" asp-action="Create">Добави ново бижу</a>
-    </p>
-</center>
-
-<table class="table">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
-                Име на бижуто:
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categories)
-            </th>
-            <th>
-                Описание:
-            </th>
-            <th>
                 Снимка:
             </th>
+            <th>
+                Наименование:
+            </th>
+            <th>
+                Категория:
+            </th>
+            <th>
+                Приложение:
+            </th>         
             <th>
                 Цена:
             </th>
@@ -45,17 +52,18 @@
         {
             <tr>
                 <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"><img src="@Html.DisplayFor(modelItem => item.PhotoURL)" width="100" /></a>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Categories.Id)
+                    @Html.DisplayFor(modelItem => item.Categories.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Prilojeniq.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhotoURL)
-                </td>
+              
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
@@ -67,14 +75,29 @@
                 }
                 @if (User.IsInRole("Admin"))
                 {
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактирай</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Детайли</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Изтрий</a>
+                    <td>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактирай</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Детайли</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Изтрий</a>
+                    </td>
                 }
-                <td>                  
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Детайли за бижуто</a>                    
-                </td>
+                else
+                {                 
+                        <td>
+                        <form method="get" asp-controller="Orders" asp-action="CreateWithProductId" asp-route-productId="@item.Id">
+                            <input name="productId" type="hidden" value="@item.Id" />
+                            <input name="countP" id="ccount" type="number" width="1" value="1"  style="color:black; font:bold" /> броя
+                            <input type="submit" value="Поръчай" class="btn btn-primary" />
+                        </form>
+                        </td>
+                         
+
+                                        
+                }
+               
             </tr>
         }
     </tbody>
 </table>
+

@@ -3,51 +3,70 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    thead {
+        background-color: lightsteelblue
+    }
+</style>
+<center><h1>Пазарска кошница</h1></center>
+<br />
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Products)
+                Поръчано бижу
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    Поръчано от
+                </th>
+            }
+
+            <th>
+                Количество
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Clients)
+                Дата на поръчка
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegDate)
-            </th>
-            <th></th>
+            <th>Обща цена</th>
+           <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Products.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Clients.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"> <img src="@Html.DisplayFor(modelItem => item.Products.PhotoURL)" width="100" /></a>
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @item.Clients.FirstName @item.Clients.LastName
+                    </td>
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity) броя
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegDate)
+                </td>
+                <td>
+                    @(item.Products.Price * item.Quantity) лв.
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Промени</a> 
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Детайли</a> 
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
+                    </td>
+                }
+
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,15 +1,16 @@
-﻿@model BijuteriaProject.Data.Category
+﻿@model BijuteriaProject.Data.Prilojenie
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Изтрий</h1>
+<h1>Изтрий приложение</h1>
 
-<h3>Наистина ли искате да изтриете тази категория?</h3>
+<h3>Наистина ли искате да изтриете това приложение?</h3>
 <div>
     
     <hr />
+   
     <dl class="row">
         <dt class="col-sm-2">
             Наименование:
@@ -34,6 +35,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Изтрий" class="btn btn-danger" /> |
-        <a asp-action="Index">Обратно към категориите</a>
+        <a asp-action="Index">Обратно към приложенията</a>
     </form>
 </div>

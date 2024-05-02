@@ -50,6 +50,20 @@ namespace BijuteriaProject.Controllers
 
             return View(order);
         }
+        public async Task<IActionResult> CreateWithProductId(int productId, int countP)
+        {
+            var currentWine = await _context.Products.FirstOrDefaultAsync(z => z.Id == productId);
+            Order order = new Order();
+            //order.ProductsId = productId;
+            // productId = order.ProductsId;
+            order.ProductID = productId;
+            order.Quantity = countP;
+            order.ClientID = _userManager.GetUserId(User);
+            var price = countP * currentWine.Price;
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         // GET: Orders/Create
         public IActionResult Create()
